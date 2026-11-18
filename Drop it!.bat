@@ -23,6 +23,9 @@ if "%~1"=="" (
 
 echo [INFO] Starting cleaning image...
 
+set /a SUCCESS=0
+set /a ERROR=0
+
 :: Loop through all dropped files
 :LOOP
 
@@ -40,17 +43,29 @@ echo [INFO] %~nx1
 if not exist "%OUTPUT%" mkdir "%OUTPUT%"
 
 :: Clean
+echo.
 "%EXIFTOOL%" -all= --ICC_Profile -o "%OUTPUT%\%NAME%%EXT%" "%INPUT%"
+echo.
 
 if errorlevel 1 (
-    echo [ERROR] An error has occurred.
+    echo [ERROR] Cleaning failed.
+    set /a ERROR+=1
 ) else (
     echo [INFO] Cleaned successfully.
+    set /a SUCCESS+=1
 )
 
 shift
 goto LOOP
 
 :END
+
+set /a TOTAL=SUCCESS+ERROR
+
+echo.
+echo Total:   %TOTAL%
+echo Success: %SUCCESS%
+echo Error:   %ERROR%
+echo.
 
 pause
