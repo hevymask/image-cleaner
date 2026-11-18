@@ -48,7 +48,7 @@ echo.
 echo.
 
 if errorlevel 1 (
-    echo [ERROR] Cleaning failed.
+    echo [ERROR] Cleaning failed with %INPUT%.
     set /a ERROR+=1
 ) else (
     echo [INFO] Cleaned successfully.
